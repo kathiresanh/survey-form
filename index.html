@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table,
+    th,
+    td,
+    tr {
+
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    #form1 {
+        position: "abolute";
+        left: "0px";
+        top: "0px"
+        
+    }
+   
+#form1{
+    background-color: rgb(173, 166, 166);
+    width: 22%;
+}
+</style>
+
+<body>
+    <form id="form1">
+        <label for="firstName">first name</label><br>
+        <input type="text" name="firstName" id="name" placeholder="FirstName" required><br>
+        <label for="email">email</label><br>
+        <input type="email" name="email" id="email" placeholder="Email" required><br>
+        <label for="password">password</label><br>
+        <input type="password" name="password" id="psd" placeholder="Password" required><br>
+        <label for="phoneNumber">phone number</label><br>
+        <input type="number" name="phoneNumber" id="num" placeholder="Phone Number"  required><br>
+        <label for="state">state</label><br>
+        <input type="text" name="state" id="state" placeholder="State" required><br>
+        <label for="City">City</label><br>
+        <input type="text" name="city" id="city" placeholder="City" required><br>
+        <label for="Country">Country</label><br>
+        <input type="text" name="country" id="country" placeholder="country" required><br>
+        <label for="Pincode">Pincode</label><br>
+        <input type="number" name="pincode" id="pin" placeholder="pincode" required><br>
+        <label for="education">Education </label><br>
+        <input type="text" name="education" id="education" placeholder="education" required><br>
+      
+        <br>
+
+        <button type="submit">submit</button><br>
+    </form>
+
+    <script>
+       
+
+
+
+
+        document.getElementById("form1").addEventListener("submit", async function (element) {
+            element.preventDefault();
+
+            var object = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phonenum: document.getElementById("num").value,
+                password: document.getElementById("psd").value,
+                state: document.getElementById("state").value,
+                city: document.getElementById("city").value,
+                country: document.getElementById("country").value,
+
+                education: document.getElementById("education").value,
+                pincode: document.getElementById("pin").value
+            }
+                   
+            try {
+                var sendData = await fetch("https://619856c0164fa60017c23011.mockapi.io/users", {
+                    method: "POST",
+                    body: JSON.stringify(object),
+                    headers: {
+                        "Content-type": "application/json"
+
+                    }
+
+                })
+                location.reload();
+            }
+            catch (error) {
+                console.log(error)
+            }
+
+        });
+
+
+
+        var board2 = document.createElement("div");
+        board2.style.width = "80%";
+        board2.style.backgroundColor = "white";
+        board2.innerHTML=`<table><tr><td style="height:50px;width:120px">Name</td><td style="height:50px;width:160px">Email</td><td style="height:50px;width:120px">Password</td><td style="height:50px;width:120px">PhoneNumber</td><td style="height:50px;width:120px" >State</td><td style="height:50px;width:120px">City</td><td style="height:50px;width:120px">Country</td><td style="height:50px;width:120px">pincode</td></tr></table>`;
+        
+        board2.style.position = "absolute";
+        board2.style.left = "16%"
+        board2.style.top = "0px";
+    
+        document.body.appendChild(board2)
+
+
+
+
+        // get data from api
+
+        async function getdata() {
+            try {
+                var data = await fetch("https://619856c0164fa60017c23011.mockapi.io/users")
+                var dataobj = await (data.json())
+
+
+              
+
+                // var mydata=(Object.values(dataobj[0]));
+                // console.log(mydata[0])
+                var board3 = document.createElement("div");
+                board3.style.width = "80%";
+
+                board3.style.position = "absolute";
+                board3.style.left = "16%"
+                board3.style.top = "40px";
+                board3.style.backgroundColor = "white"
+                board3.style.display = "flex";
+                board3.style.flexDirection = "row";
+                board3.style.flexWrap = "wrap";
+                document.body.appendChild(board3)
+ 
+                for (j = 0; j < dataobj.length; j++) {
+
+                    
+                          var mydata = (Object.values(dataobj[j]));
+                          console.log(mydata[0])
+
+
+                    var myname1 = document.createElement("div")
+                    myname1.style.width = "100%";
+                    myname1.style.height = "20px";
+                  
+
+                    myname1.innerHTML=`<table><tr><td style="height:50px;width:120px">${mydata[1]}</td><td style="height:50px;width:160px">${mydata[2]}</td><td style="height:50px;width:120px">${mydata[3]}</td><td style="height:50px;width:120px">${mydata[4]}</td><td style="height:50px;width:120px" >${mydata[5]}</td><td style="height:50px;width:120px">${mydata[6]}</td><td style="height:50px;width:120px">${mydata[7]}</td><td style="height:50px;width:120px">${mydata[8]}</td></tr></table>`
+                    myname1.style.webkitTextFillColor = "red"
+                    myname1.style.marginLeft = "5px";
+                    myname1.style.marginTop = "5px";
+                
+                    board3.appendChild(myname1)
+
+                    var button2 = document.createElement("button");
+                    button2.setAttribute("id",mydata[0])
+                    button2.innerText="edit";
+                    button2.style.marginLeft="1050px"
+                    button2.addEventListener("click", async function(){
+                        
+                        try {
+                var updata = await fetch(`https://619856c0164fa60017c23011.mockapi.io/users/${this.id}`)
+                var updataobj = await (updata.json())
+                console.log(updataobj)  
+                console.log(updataobj.name)   
+                document.getElementById("name").value=updataobj.name;
+                document.getElementById("email").value=updataobj.email;
+                document.getElementById("num").value=updataobj.phonenum;
+                document.getElementById("psd").value=updataobj.password;
+                document.getElementById("state").value=updataobj.state;
+                document.getElementById("city").value=updataobj.city;
+                document.getElementById("country").value=updataobj.country;
+
+                document.getElementById("education").value=updataobj.education;
+                document.getElementById("pin").value=updataobj.pincode;
+            }
+                catch(err){
+                    console.log(error)
+                }
+                        
+            });  
+            
+                    
+            board3.appendChild(button2)
+
+            var button3=document.createElement("button")
+            button3.innerText="update";
+            button3.setAttribute("id",mydata[0])
+            button3.style.marginLeft="1050px"
+            button3.addEventListener("click", async function(){
+
+                
+            var object = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phonenum: document.getElementById("num").value,
+                password: document.getElementById("psd").value,
+                state: document.getElementById("state").value,
+                city: document.getElementById("city").value,
+                country: document.getElementById("country").value,
+
+                education: document.getElementById("education").value,
+                pincode: document.getElementById("pin").value
+            }
+            var up =(Object.values(object))
+              
+               if((up.includes(""))==false){ 
+            try {
+                var sendData = await fetch(`https://619856c0164fa60017c23011.mockapi.io/users/${this.id}`, {
+                    method: "PUT",
+                    body: JSON.stringify(object),
+                    headers: {
+                        "Content-type": "application/json"
+
+                    }
+
+                })
+                location.reload();
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }else{
+            alert("Field should not be empty")
+        }
+
+            })
+            board3.appendChild(button3)
+            
+        
+        
+
+                    var button1=document.createElement("button");
+                    button1.setAttribute("id",mydata[0])
+                    button1.innerText="del";
+                    button1.style.marginLeft="1050px"
+                    button1.style.marginTop="0px"
+                    
+                    button1.addEventListener("click", async function(){
+                              var delconfirm=confirm("Are you sure want to delete this")  
+                              if(delconfirm==true){                                            
+                        try {
+                  await  fetch(`https://619856c0164fa60017c23011.mockapi.io/users/${this.id}`, {
+                    method: "DELETE",
+                })
+                location.reload();
+                   
+            }catch(error) {
+                 console.log("this is error")
+            }}
+            })
+
+                board3.appendChild(button1)
+            }
+            } 
+            catch (error) {
+                console.log(error)
+         
+          }
+        
+        }
+ 
+
+
+        // get datas
+
+        
+
+        
+
+        getdata();
+    </script>
+</body>
+
+</html>
